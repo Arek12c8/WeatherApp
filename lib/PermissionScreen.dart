@@ -1,8 +1,11 @@
 import 'package:clean_air/MyHomePage.dart';
 import 'package:clean_air/main.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather/weather.dart';
+
+import 'SplashScreen.dart';
 
 class PermissionScreen extends StatefulWidget {
   @override
@@ -60,18 +63,27 @@ class _PermissionScreenState extends State<PermissionScreen> {
               child: SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
-                          padding: MaterialStateProperty.all(
-                              EdgeInsets.only(top: 12.0, bottom: 12.0))),
-                      onPressed: () {
-
-                      },
-                      child: Text(
-                        'Wyrażam zgodę!',
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      ))),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        padding: MaterialStateProperty.all(
+                            EdgeInsets.only(top: 12.0, bottom: 12.0))),
+                    child: Text(
+                      'Wyrażam zgodę!',
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    ),
+                    onPressed: () async {
+                      LocationPermission permission =
+                          await Geolocator.requestPermission();
+                      if (permission == LocationPermission.always ||
+                          permission == LocationPermission.whileInUse) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SplashScreen()));
+                      }
+                    },
+                  )),
             ))
       ]),
     );

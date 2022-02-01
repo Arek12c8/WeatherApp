@@ -4,6 +4,7 @@ import 'package:clean_air/PermissionScreen.dart';
 import 'package:clean_air/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather/weather.dart';
 
@@ -74,29 +75,54 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    if (havePermissionToAsk()) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => PermissionScreen()));
-    } else {
-      SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
-        executeOnceAfterBuild();
-      });
-    }
+    checkPermission();
   }
 
   @override
-  bool havePermissionToAsk() {
-    return false;
+  checkPermission() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if(permission == LocationPermission.denied || permission == LocationPermission.deniedForever){
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => PermissionScreen()));
+  }else {
+  SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+  executeOnceAfterBuild();
+  });
+  }
   }
 
   void executeOnceAfterBuild() async {
-    WeatherFactory wf = new WeatherFactory("238e1cf150cca96cf3b0203a7b759368",
-        language: Language.POLISH);
-    Weather w = await wf.currentWeatherByCityName("Poizdów");
-    log(w.toJson().toString());
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => MyHomePage(weather: w)));
-  }
+    Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.lowest,
+      forceAndroidLocationManager: true,
+      timeLimit: Duration(seconds: 5))
+      .then((value) => {loadLocationData(value)})
+        .onError((error, stackTrace) => {
+          Geolocator.getLastKnownPosition(forceAndroidLocationManager: true)
+      .then((value) => {loadLocationData(value)})
+    });
+
 
 
 }
+
+  loadLocationData(Position? value) async {
+
+    var latitude = value!.latitude;
+    var longitude = value.longitude;
+    log(latitude.toString() + " " + longitude.toString());
+
+    WeatherFactory wf = new WeatherFactory("238e1cf150cca96cf3b0203a7b759368",
+        language: Language.POLISH);
+    Weather w = await wf.currentWeatherByLocation(latitude, longitude);
+    log(w.toJson().toString());
+
+
+
+
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => MyHomePage(weather: w)));
+
+  }
+  }

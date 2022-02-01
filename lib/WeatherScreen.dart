@@ -47,7 +47,17 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     image: AssetImage('icons/${getIconByMood(widget.weather)}.png'),
                   ),
                   Padding(padding: EdgeInsets.only(top: 41.0)),
-                  Text("${DateFormat.MMMMEEEEd('pl').format(DateTime.now())}, ${widget.weather.weatherDescription}",
+                  Text("${DateFormat.MMMMEEEEd('pl').format(DateTime.now())}",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.lato(
+                          textStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16.0,
+                            height: 1.2,
+                            color: Colors.white,
+                          ))),
+                  Padding(padding: EdgeInsets.only(top: 20.0)),
+                  Text("${widget.weather.weatherDescription}",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.lato(
                           textStyle: TextStyle(
@@ -162,7 +172,16 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               height: 1.2,
                               color: Colors.white,
                             ))),
-                  Padding(padding: EdgeInsets.only(top: 68.0)),
+                  Padding(padding: EdgeInsets.only(top: 15.0)),
+                  Text("${widget.weather.areaName}",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.lato(
+                          textStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16.0,
+                            height: 1.2,
+                            color: Colors.white,
+                          ))),
                 ],
               )),
         ]),
@@ -196,6 +215,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
   LinearGradient getGradientByMood(Weather weather) {
     var main = weather.weatherMain;
     if(main == 'Clouds' || main == 'Dizzle' || main == 'Snow'){
+      if(isNight(weather))
+        return LinearGradient(
+            begin: Alignment.centerRight,
+            end: Alignment.centerLeft,
+            colors: [
+              new Color(0xff313545),
+              new Color(0xff121118),
+            ]);
       return LinearGradient(
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
@@ -220,9 +247,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             new Color(0xff313545),
             new Color(0xff121118),
           ]);
-    }
-
-    else{
+    }else{
       return LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
