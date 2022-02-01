@@ -1,207 +1,201 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
 
 class WeatherScreen extends StatefulWidget {
   WeatherScreen({required this.weather});
-  final Weather weather;
 
+  final Weather weather;
 
   @override
   State<WeatherScreen> createState() => _WeatherScreenState();
-
 }
 
-
 class _WeatherScreenState extends State<WeatherScreen> {
-
-
   @override
   void initState() {
     super.initState();
     initializeDateFormatting();
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Stack(fit: StackFit.expand, children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-                color: new Color(0xffffffff),
-                gradient: getGradientByMood(widget.weather)),
-          ),
-          Align(
-              alignment: FractionalOffset.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 45.0)),
-                  Image(
-                    image: AssetImage('icons/${getIconByMood(widget.weather)}.png'),
-                  ),
-                  Padding(padding: EdgeInsets.only(top: 41.0)),
-                  Text("${DateFormat.MMMMEEEEd('pl').format(DateTime.now())}",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.lato(
-                          textStyle: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16.0,
-                            height: 1.2,
-                            color: Colors.white,
-                          ))),
-                  Padding(padding: EdgeInsets.only(top: 20.0)),
-                  Text("${widget.weather.weatherDescription}",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.lato(
-                          textStyle: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16.0,
-                            height: 1.2,
-                            color: Colors.white,
-                          ))),
-                  Padding(padding: EdgeInsets.only(top: 12.0)),
-                  Text('${widget.weather.temperature!.celsius!.floor()}°C',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.lato(
-                          textStyle: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 64.0,
-                            height: 1.2,
-                            color: Colors.white,
-                          ))),
-                  Text('Odczuwalna ${widget.weather.tempFeelsLike!.celsius!.floor()} °C',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.lato(
-                          textStyle: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16.0,
-                            height: 1.2,
-                            color: Colors.white,
-                          ))),
-                  Padding(padding: EdgeInsets.only(bottom: 28.0)),
-                  IntrinsicHeight(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
+        Container(
+          decoration: BoxDecoration(
+              color: new Color(0xffffffff),
+              gradient: getGradientByMood(widget.weather)),
+        ),
+        Align(
+            alignment: FractionalOffset.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(padding: EdgeInsets.only(top: 45.0)),
+                Image(
+                  image:
+                      AssetImage('icons/${getIconByMood(widget.weather)}.png'),
+                ),
+                Padding(padding: EdgeInsets.only(top: 41.0)),
+                Text("${DateFormat.MMMMEEEEd('pl').format(DateTime.now())}",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16.0,
+                      height: 1.2,
+                      color: Colors.white,
+                    ))),
+                Padding(padding: EdgeInsets.only(top: 20.0)),
+                Text("${widget.weather.weatherDescription}",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16.0,
+                      height: 1.2,
+                      color: Colors.white,
+                    ))),
+                Padding(padding: EdgeInsets.only(top: 12.0)),
+                Text('${widget.weather.temperature!.celsius!.floor()}°C',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 64.0,
+                      height: 1.2,
+                      color: Colors.white,
+                    ))),
+                Text(
+                    'Odczuwalna ${widget.weather.tempFeelsLike!.celsius!.floor()} °C',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16.0,
+                      height: 1.2,
+                      color: Colors.white,
+                    ))),
+                Padding(padding: EdgeInsets.only(bottom: 28.0)),
+                IntrinsicHeight(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 130,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text('Ciśnienie',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 16.0,
+                                  height: 1.2,
+                                  color: Colors.white,
+                                ))),
+                            Padding(padding: EdgeInsets.only(top: 2.0)),
+                            Text('${widget.weather.pressure} hPa',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 22.0,
+                                  height: 1.2,
+                                  color: Colors.white,
+                                ))),
+                          ],
+                        ),
+                      ),
+                      VerticalDivider(
+                        width: 45,
+                        thickness: 1,
+                        color: Colors.white,
+                      ),
+                      Container(
                           width: 130,
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text('Ciśnienie',
+                              Text('Wiatr',
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.lato(
                                       textStyle: TextStyle(
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 16.0,
-                                        height: 1.2,
-                                        color: Colors.white,
-                                      ))),
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 16.0,
+                                    height: 1.2,
+                                    color: Colors.white,
+                                  ))),
                               Padding(padding: EdgeInsets.only(top: 2.0)),
-                              Text('${widget.weather.pressure} hPa',
+                              Text('${widget.weather.windSpeed} m/s',
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.lato(
                                       textStyle: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 22.0,
-                                        height: 1.2,
-                                        color: Colors.white,
-                                      ))),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 22.0,
+                                    height: 1.2,
+                                    color: Colors.white,
+                                  )))
                             ],
-                          ),
-                        ),
-                        VerticalDivider(
-                          width: 45,
-                          thickness: 1,
-                          color: Colors.white,
-                        ),
-                        Container(
-                            width: 130,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('Wiatr',
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.lato(
-                                        textStyle: TextStyle(
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 16.0,
-                                          height: 1.2,
-                                          color: Colors.white,
-                                        ))),
-                                Padding(padding: EdgeInsets.only(top: 2.0)),
-                                Text('${widget.weather.windSpeed} m/s',
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.lato(
-                                        textStyle: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 22.0,
-                                          height: 1.2,
-                                          color: Colors.white,
-                                        )))
-                              ],
-                            ))
-                      ],
-                    ),
+                          ))
+                    ],
                   ),
-                  Padding(padding: EdgeInsets.only(top: 24.0)),
-                  if(widget.weather.rainLastHour != null)
+                ),
+                Padding(padding: EdgeInsets.only(top: 24.0)),
+                if (widget.weather.rainLastHour != null)
                   Text('Opady deszczu: ${widget.weather.rainLastHour}  mm/1h',
                       textAlign: TextAlign.center,
                       style: GoogleFonts.lato(
                           textStyle: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16.0,
-                            height: 1.2,
-                            color: Colors.white,
-                          ))),
-                    if(widget.weather.snowLastHour != null)
-                    Text('Opady śniegu: ${widget.weather.snowLastHour}  mm/h',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.lato(
-                            textStyle: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16.0,
-                              height: 1.2,
-                              color: Colors.white,
-                            ))),
-                  Padding(padding: EdgeInsets.only(top: 15.0)),
-                  Text("${widget.weather.areaName}",
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16.0,
+                        height: 1.2,
+                        color: Colors.white,
+                      ))),
+                if (widget.weather.snowLastHour != null)
+                  Text('Opady śniegu: ${widget.weather.snowLastHour}  mm/h',
                       textAlign: TextAlign.center,
                       style: GoogleFonts.lato(
                           textStyle: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16.0,
-                            height: 1.2,
-                            color: Colors.white,
-                          ))),
-                ],
-              )),
-        ]),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16.0,
+                        height: 1.2,
+                        color: Colors.white,
+                      ))),
+                Padding(padding: EdgeInsets.only(top: 15.0)),
+                Text("${widget.weather.areaName}",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16.0,
+                      height: 1.2,
+                      color: Colors.white,
+                    ))),
+              ],
+            )),
+      ]),
     );
   }
 
   String getIconByMood(Weather weather) {
+    //Funkcja ustawiająca ikonę w zależności do danych pogodowych
     var main = weather.weatherMain;
-    if(main == 'Dizzle'){
+    if (main == 'Dizzle') {
       return 'weather-rain';
-    }else if(main == 'Clouds'){
+    } else if (main == 'Clouds') {
       return 'weather-cloud';
-    }else if(main == 'Snow'){
+    } else if (main == 'Snow') {
       return 'weather-snow';
-    }else if(main == 'Thunderstorm'){
+    } else if (main == 'Thunderstorm') {
       return 'weather-lighting';
-    }else if(isNight(weather)){
+    } else if (isNight(weather)) {
       return 'weather-moonny';
-    }
-    else{
+    } else {
       return 'weather-sunny';
     }
   }
@@ -213,9 +207,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
   }
 
   LinearGradient getGradientByMood(Weather weather) {
+    //Funkcja dopasowująca kolor tła do danych pogodowych
     var main = weather.weatherMain;
-    if(main == 'Clouds' || main == 'Dizzle' || main == 'Snow'){
-      if(isNight(weather))
+    if (main == 'Clouds' || main == 'Dizzle' || main == 'Snow') {
+      if (isNight(weather))
         return LinearGradient(
             begin: Alignment.centerRight,
             end: Alignment.centerLeft,
@@ -231,7 +226,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             new Color(0xff40A0EF),
             new Color(0xff77E1EE)
           ]);
-    }else if(main == 'Thunderstorm'){
+    } else if (main == 'Thunderstorm') {
       return LinearGradient(
           begin: Alignment.centerRight,
           end: Alignment.centerLeft,
@@ -239,7 +234,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             new Color(0xff313545),
             new Color(0xff121118),
           ]);
-    }else if(isNight(weather)){
+    } else if (isNight(weather)) {
       return LinearGradient(
           begin: Alignment.centerRight,
           end: Alignment.centerLeft,
@@ -247,7 +242,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             new Color(0xff313545),
             new Color(0xff121118),
           ]);
-    }else{
+    } else {
       return LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -257,5 +252,4 @@ class _WeatherScreenState extends State<WeatherScreen> {
           ]);
     }
   }
-
 }

@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:clean_air/MyHomePage.dart';
 import 'package:clean_air/PermissionScreen.dart';
 import 'package:clean_air/main.dart';
@@ -81,48 +82,43 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   checkPermission() async {
     LocationPermission permission = await Geolocator.checkPermission();
-    if(permission == LocationPermission.denied || permission == LocationPermission.deniedForever){
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => PermissionScreen()));
-  }else {
-  SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
-  executeOnceAfterBuild();
-  });
-  }
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => PermissionScreen()));
+    } else {
+      SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+        executeOnceAfterBuild();
+      });
+    }
   }
 
   void executeOnceAfterBuild() async {
+    //Funkcja uruchamiana raz po starcie apk,// mająca na celu pobranie danych o lokalizacji
     Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.lowest,
-      forceAndroidLocationManager: true,
-      timeLimit: Duration(seconds: 5))
-      .then((value) => {loadLocationData(value)})
+            desiredAccuracy: LocationAccuracy.best,
+            forceAndroidLocationManager: true,
+            timeLimit: Duration(seconds: 5))
+        .then((value) => {loadLocationData(value)})
         .onError((error, stackTrace) => {
-          Geolocator.getLastKnownPosition(forceAndroidLocationManager: true)
-      .then((value) => {loadLocationData(value)})
-    });
-
-
-
-}
+              Geolocator.getLastKnownPosition(forceAndroidLocationManager: true)
+                  .then((value) => {loadLocationData(value)})
+            });
+  }
 
   loadLocationData(Position? value) async {
+    //Funkcja pobierająca dane o pogodzie z Internetu
 
     var latitude = value!.latitude;
     var longitude = value.longitude;
-    log(latitude.toString() + " " + longitude.toString());
+    log(latitude.toString() + " " + longitude.toString()); //Wyświetlam współrzędne w celu sprawdzenia działania funkcji
 
     WeatherFactory wf = new WeatherFactory("238e1cf150cca96cf3b0203a7b759368",
         language: Language.POLISH);
     Weather w = await wf.currentWeatherByLocation(latitude, longitude);
     log(w.toJson().toString());
 
-
-
-
-
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => MyHomePage(weather: w)));
-
   }
-  }
+}

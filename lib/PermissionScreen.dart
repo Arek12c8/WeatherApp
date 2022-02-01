@@ -1,9 +1,7 @@
-import 'package:clean_air/MyHomePage.dart';
 import 'package:clean_air/main.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:weather/weather.dart';
 
 import 'SplashScreen.dart';
 
